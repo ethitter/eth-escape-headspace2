@@ -42,10 +42,17 @@ class ETH_Escape_HeadSpace2 {
 	/**
 	 * Class properties
 	 */
-	private $hs_keys = array(
+	private $hs_string_keys = array(
 		'_headspace_description',
 		'_headspace_metakey',
+	);
+
+	private $hs_robots_keys = array(
 		'_headspace_noindex',
+		'_headspace_nofollow',
+		'_headspace_noarchive',
+		'_headspace_noodp',
+		'_headspace_noydir',
 	);
 
 	/**
@@ -69,7 +76,7 @@ class ETH_Escape_HeadSpace2 {
 		// Check for HS data
 		$hs_data = array();
 
-		foreach ( $this->hs_keys as $hs_key ) {
+		foreach ( array_merge( $this->hs_string_keys, $this->hs_robots_keys ) as $hs_key ) {
 			$value = get_post_meta( get_the_ID(), $hs_key, true );
 
 			if ( ! empty( $value ) ) {
@@ -83,13 +90,46 @@ class ETH_Escape_HeadSpace2 {
 		}
 
 		// Build output
+		echo "\n<!-- Escape HeadSpace2 by Erick Hitter; ethitter.com -->\n";
+
+		// Handle basic, string-containing keys
 		foreach ( $hs_data as $hs_key => $hs_value ) {
 			switch( $hs_key ) {
+				case '_headspace_description' :
+					echo '<meta name="description" content="' . esc_attr( $hs_value ) . '" />' . "\n";
+					break;
+
+				case '_headspace_metakey' :
+					echo '<meta name="keywords" content="' . esc_attr( $hs_value ) . '" />' . "\n";
+					break;
+
 				default :
 					continue;
 					break;
 			}
 		}
+
+		// Handle robots key, which is build from several meta keys
+		$robots = array();
+
+		foreach ( $this->hs_robots_keys as $hs_robot_key ) {
+			if ( isset( $hs_data[ $hs_robot_key] ) ) {
+				$robots[] = str_replace( '_headspace_', '', $hs_robot_key );
+			}
+		}
+
+		if ( ! empty( $robots ) ) {
+			if ( 1 === count( $robots ) && in_array( 'noindex', $robots ) ) {
+				$robots[] = 'follow';
+			}
+
+			$robots = implode( ',', $robots );
+
+			echo '<meta name="robots" content="' . esc_attr( $robots ) . '" />' . "\n";
+		}
+
+		// Mark end of output
+		echo "<!-- Escape HeadSpace2 -->\n";
 	}
 }
 
