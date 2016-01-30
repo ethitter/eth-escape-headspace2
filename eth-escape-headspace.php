@@ -55,6 +55,11 @@ class ETH_Escape_HeadSpace2 {
 		'_headspace_noydir',
 	);
 
+	private $hs_keys_to_meta_names = array(
+		'_headspace_description' => 'description',
+		'_headspace_metakey'     => 'keywords',
+	);
+
 	/**
 	 * Register plugin's hooks
 	 *
@@ -96,11 +101,8 @@ class ETH_Escape_HeadSpace2 {
 		foreach ( $hs_data as $hs_key => $hs_value ) {
 			switch( $hs_key ) {
 				case '_headspace_description' :
-					echo '<meta name="description" content="' . esc_attr( $hs_value ) . '" />' . "\n";
-					break;
-
 				case '_headspace_metakey' :
-					echo '<meta name="keywords" content="' . esc_attr( $hs_value ) . '" />' . "\n";
+					echo '<meta name="' . esc_attr( $this->hs_keys_to_meta_names[ $hs_key ] ) . '" content="' . esc_attr( $hs_value ) . '" />' . "\n";
 					break;
 
 				default :
