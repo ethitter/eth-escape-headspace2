@@ -8,7 +8,7 @@ Stable tag: 0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Output existing HeadSpace2 data without the original plugin. Allows HeadSpace2 (no longer maintained) to be deactivated without impactacting legacy content.
+Output existing HeadSpace2 data without the original plugin. Deactivate HeadSpace2 (no longer maintained) without impactacting legacy content.
 
 == Description ==
 
