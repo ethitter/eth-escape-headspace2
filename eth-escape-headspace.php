@@ -40,12 +40,56 @@ class ETH_Escape_HeadSpace2 {
 	}
 
 	/**
-	 * Register actions and filters
+	 * Class properties
+	 */
+	private $hs_keys = array(
+		'_headspace_description',
+		'_headspace_metakey',
+		'_headspace_noindex',
+	);
+
+	/**
+	 * Register plugin's hooks
 	 *
 	 * @return null
 	 */
 	private function __construct() {
-		//
+		add_action( 'wp_head', array( $this, 'action_wp_head' ) );
+	}
+
+	/**
+	 *
+	 */
+	public function action_wp_head() {
+		// Applies only to individual post objects
+		if ( ! is_singular() ) {
+			return;
+		}
+
+		// Check for HS data
+		$hs_data = array();
+
+		foreach ( $this->hs_keys as $hs_key ) {
+			$value = get_post_meta( get_the_ID(), $hs_key, true );
+
+			if ( ! empty( $value ) ) {
+				$hs_data[ $hs_key ] = $value;
+			}
+		}
+
+		// Bail if no HS data exists for this post
+		if ( empty( $hs_data ) ) {
+			return;
+		}
+
+		// Build output
+		foreach ( $hs_data as $hs_key => $hs_value ) {
+			switch( $hs_key ) {
+				default :
+					continue;
+					break;
+			}
+		}
 	}
 }
 
