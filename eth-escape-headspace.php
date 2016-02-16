@@ -45,9 +45,7 @@ class ETH_Escape_HeadSpace2 {
 	private $hs_string_keys = array(
 		'_headspace_description',
 		'_headspace_metakey',
-		'_headspace_page_title',
 		'_headspace_raw',
-		'_headspace_raw_footer',
 	);
 
 	private $hs_array_keys = array(
@@ -75,6 +73,7 @@ class ETH_Escape_HeadSpace2 {
 	 */
 	private function __construct() {
 		add_action( 'wp_head', array( $this, 'action_wp_head' ) );
+		add_action( 'wp_footer', array( $this, 'action_wp_footer' ) );
 	}
 
 	/**
@@ -163,7 +162,7 @@ class ETH_Escape_HeadSpace2 {
 		}
 
 		// Raw output should follow all other output
-		if ( isset( $hs_data[ '_headspace_raw' ] ) ) {
+		if ( isset( $hs_data[ '_headspace_raw' ] ) && ! empty( $hs_data[ '_headspace_raw' ] ) ) {
 			$output[] = $hs_data[ '_headspace_raw' ];
 		}
 
@@ -174,6 +173,17 @@ class ETH_Escape_HeadSpace2 {
 
 		// Mark end of output
 		echo "\n<!-- Escape HeadSpace2 -->\n";
+	}
+
+	/**
+	 *
+	 */
+	public function action_wp_footer() {
+		$output = get_post_meta( get_the_ID(), '_headspace_raw_footer', true );
+
+		if ( ! empty( $output ) ) {
+			echo $output . "\n";
+		}
 	}
 }
 
