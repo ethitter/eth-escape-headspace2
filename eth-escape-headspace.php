@@ -67,11 +67,24 @@ class ETH_Escape_HeadSpace2 {
 	);
 
 	/**
-	 * Register plugin's hooks
+	 * Defer plugin hook additions until all plugins are loaded
+	 * Allows plugin to defer to HeadSpace2 when active
 	 *
 	 * @return null
 	 */
 	private function __construct() {
+		add_action( 'plugins_loaded', array( $this, 'maybe_add_hooks' ) );
+	}
+
+	/**
+	 * Conditionally register plugin's hooks
+	 */
+	public function maybe_add_hooks() {
+		// Defer to HeadSpace2 when active
+		if ( class_exists( 'HeadSpace_Plugin' ) ) {
+			return;
+		}
+
 		add_filter( 'pre_get_document_title', array( $this, 'filter_pre_get_document_title' ) );
 		add_filter( 'wp_title', array( $this, 'filter_wp_title' ), 10, 3 );
 
