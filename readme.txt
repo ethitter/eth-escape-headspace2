@@ -14,7 +14,11 @@ Output existing HeadSpace2 data without the original plugin. Deactivate HeadSpac
 
 Outputs data stored in HeadSpace2 post meta without requiring HeadSpace2. This allows one to remove the now-unmaintained HeadSpace2 plugin without losing the data associated with legacy content.
 
-Note that many current SEO plugins for WordPress also handle migration, but since I don't use any such plugins on my network, I created this alternative.
+The HeadSpace2 plugin is no longer maintained and generates many warnings when used with PHP 7. With this in mind, and without judging the original plugin, I created this option to preserve the plugin's output for SEO purposes. The plugin *does not* allow HeadSpace2 data to be edited; it only allows search engines to continue accessing it.
+
+Note that many current SEO plugins also handle migration from HeadSpace2, but since I don't use any such plugins on my network, I created this alternative.
+
+For a full list of the HeadSpace2 data that's supported, see the FAQ.
 
 == Installation ==
 
@@ -26,6 +30,22 @@ Note that many current SEO plugins for WordPress also handle migration, but sinc
 = Can I modify existing data using this plugin? =
 
 No. If you need to update entries, reinstall HeadSpace2 or modify the values directly in the database.
+
+= What HeadSpace2 data is supported? =
+
+Currently the plugin will output:
+
+* custom post/page titles
+* meta keywords
+* meta descriptions
+* custom robots.txt declarations
+* JavaScript includes
+* Stylesheet includes
+* Raw header and footer content
+
+= Why isn't all HeadSpace2 data supported? =
+
+Mostly, I either didn't have time or didn't have a good example of how a particular feature was used. Contributions are welcome. :)
 
 == Changelog ==
 

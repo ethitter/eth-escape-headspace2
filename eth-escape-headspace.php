@@ -152,9 +152,6 @@ class ETH_Escape_HeadSpace2 {
 			return;
 		}
 
-		// Build output
-		echo "\n<!-- Escape HeadSpace2 by Erick Hitter; ethitter.com -->\n";
-
 		// Handle basic, string-containing keys
 		$output = array();
 
@@ -209,11 +206,8 @@ class ETH_Escape_HeadSpace2 {
 
 		// Output whatever we've built
 		if ( ! empty( $output ) ) {
-			echo implode( "\n", $output );
+			echo "\n<!-- Escape HeadSpace2 by Erick Hitter; https://eth.pw/escape-hs2 -->\n" . implode( "\n", $output ) . "\n<!-- Escape HeadSpace2 -->\n";
 		}
-
-		// Mark end of output
-		echo "\n<!-- Escape HeadSpace2 -->\n";
 	}
 
 	/**
