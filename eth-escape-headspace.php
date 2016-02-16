@@ -72,8 +72,24 @@ class ETH_Escape_HeadSpace2 {
 	 * @return null
 	 */
 	private function __construct() {
+		add_filter( 'pre_get_document_title', array( $this, 'filter_pre_get_document_title' ) );
 		add_action( 'wp_head', array( $this, 'action_wp_head' ) );
 		add_action( 'wp_footer', array( $this, 'action_wp_footer' ) );
+	}
+
+	/**
+	 *
+	 */
+	public function filter_pre_get_document_title( $title ) {
+		$_title = get_post_meta( get_the_ID(), '_headspace_page_title', true );
+
+		if ( ! empty( $_title ) ) {
+			$title = esc_html( $_title );
+		}
+
+		unset( $_title );
+
+		return $title;
 	}
 
 	/**
