@@ -219,7 +219,7 @@ class ETH_Escape_HeadSpace2 {
 
 		// Output whatever we've built
 		if ( ! empty( $output ) ) {
-			echo "\n<!-- Escape HeadSpace2 by Erick Hitter; https://eth.pw/escape-hs2 -->\n" . implode( "\n", $output ) . "\n<!-- Escape HeadSpace2 -->\n";
+			echo "\n<!-- Escape HeadSpace2 by Erick Hitter; https://ethitter.com/plugins/ -->\n" . implode( "\n", $output ) . "\n<!-- Escape HeadSpace2 -->\n";
 		}
 	}
 
