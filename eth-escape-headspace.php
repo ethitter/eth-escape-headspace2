@@ -73,6 +73,8 @@ class ETH_Escape_HeadSpace2 {
 	 */
 	private function __construct() {
 		add_filter( 'pre_get_document_title', array( $this, 'filter_pre_get_document_title' ) );
+		add_filter( 'wp_title', array( $this, 'filter_wp_title' ), 10, 3 );
+
 		add_action( 'wp_head', array( $this, 'action_wp_head' ) );
 		add_action( 'wp_footer', array( $this, 'action_wp_footer' ) );
 	}
@@ -85,6 +87,27 @@ class ETH_Escape_HeadSpace2 {
 
 		if ( ! empty( $_title ) ) {
 			$title = esc_html( $_title );
+		}
+
+		unset( $_title );
+
+		return $title;
+	}
+
+	/**
+	 *
+	 */
+	public function filter_wp_title( $title, $sep, $loc ) {
+		$_title = get_post_meta( get_the_ID(), '_headspace_page_title', true );
+
+		if ( ! empty( $_title ) ) {
+			$_title = esc_html( $_title );
+
+			if ( 'right' == $loc ) {
+				$title = $_title . ' ' . $sep . ' ';
+			} else {
+				$title = ' ' . $sep . ' ' . $_title;
+			}
 		}
 
 		unset( $_title );
