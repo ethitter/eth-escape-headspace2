@@ -80,7 +80,8 @@ class ETH_Escape_HeadSpace2 {
 	}
 
 	/**
-	 *
+	 * Filter page titles in WP 4.1+ themes
+	 * add_theme_support( 'title-tag' )
 	 */
 	public function filter_pre_get_document_title( $title ) {
 		$_title = get_post_meta( get_the_ID(), '_headspace_page_title', true );
@@ -95,7 +96,8 @@ class ETH_Escape_HeadSpace2 {
 	}
 
 	/**
-	 *
+	 * Filter page titles in themes designed for < WP 4.1
+	 * wp_title()
 	 */
 	public function filter_wp_title( $title, $sep, $loc ) {
 		$_title = get_post_meta( get_the_ID(), '_headspace_page_title', true );
@@ -116,7 +118,7 @@ class ETH_Escape_HeadSpace2 {
 	}
 
 	/**
-	 *
+	 * Add <head> meta tags
 	 */
 	public function action_wp_head() {
 		// Applies only to individual post objects
@@ -215,7 +217,7 @@ class ETH_Escape_HeadSpace2 {
 	}
 
 	/**
-	 *
+	 * Add custom footer content
 	 */
 	public function action_wp_footer() {
 		$output = get_post_meta( get_the_ID(), '_headspace_raw_footer', true );
