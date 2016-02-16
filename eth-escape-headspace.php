@@ -4,7 +4,7 @@ Plugin Name: ETH Escape HeadSpace2
 Plugin URI: https://ethitter.com/plugins/
 Description: Output existing HeadSpace2 data without the original plugin. Allows HeadSpace2 (no longer maintained) to be deactivated without impactacting legacy content.
 Author: Erick Hitter
-Version: 0.1
+Version: 0.2
 Author URI: https://ethitter.com/
 
 This program is free software; you can redistribute it and/or modify
