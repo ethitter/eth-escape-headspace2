@@ -4,7 +4,7 @@ Donate link: https://ethitter.com/
 Tags: seo, meta tags
 Requires at least: 4.4
 Tested up to: 4.4
-Stable tag: 0.1
+Stable tag: 0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,9 @@ Note that many current SEO plugins for WordPress also handle migration, but sinc
 No. If you need to update entries, reinstall HeadSpace2 or modify the values directly in the database.
 
 == Changelog ==
+
+= 0.2 =
+* Add support for page titles, scripts, stylesheets, and raw header/footer content.
 
 = 0.1 =
 * Initial release
