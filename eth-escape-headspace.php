@@ -45,6 +45,12 @@ class ETH_Escape_HeadSpace2 {
 	private $hs_string_keys = array(
 		'_headspace_description',
 		'_headspace_metakey',
+		'_headspace_raw',
+	);
+
+	private $hs_array_keys = array(
+		'_headspace_scripts',
+		'_headspace_stylesheets',
 	);
 
 	private $hs_robots_keys = array(
@@ -66,11 +72,53 @@ class ETH_Escape_HeadSpace2 {
 	 * @return null
 	 */
 	private function __construct() {
+		add_filter( 'pre_get_document_title', array( $this, 'filter_pre_get_document_title' ) );
+		add_filter( 'wp_title', array( $this, 'filter_wp_title' ), 10, 3 );
+
 		add_action( 'wp_head', array( $this, 'action_wp_head' ) );
+		add_action( 'wp_footer', array( $this, 'action_wp_footer' ) );
 	}
 
 	/**
-	 *
+	 * Filter page titles in WP 4.1+ themes
+	 * add_theme_support( 'title-tag' )
+	 */
+	public function filter_pre_get_document_title( $title ) {
+		$_title = get_post_meta( get_the_ID(), '_headspace_page_title', true );
+
+		if ( ! empty( $_title ) ) {
+			$title = esc_html( $_title );
+		}
+
+		unset( $_title );
+
+		return $title;
+	}
+
+	/**
+	 * Filter page titles in themes designed for < WP 4.1
+	 * wp_title()
+	 */
+	public function filter_wp_title( $title, $sep, $loc ) {
+		$_title = get_post_meta( get_the_ID(), '_headspace_page_title', true );
+
+		if ( ! empty( $_title ) ) {
+			$_title = esc_html( $_title );
+
+			if ( 'right' == $loc ) {
+				$title = $_title . ' ' . $sep . ' ';
+			} else {
+				$title = ' ' . $sep . ' ' . $_title;
+			}
+		}
+
+		unset( $_title );
+
+		return $title;
+	}
+
+	/**
+	 * Add <head> meta tags
 	 */
 	public function action_wp_head() {
 		// Applies only to individual post objects
@@ -81,11 +129,21 @@ class ETH_Escape_HeadSpace2 {
 		// Check for HS data
 		$hs_data = array();
 
+		// Keys that only exist once per post
 		foreach ( array_merge( $this->hs_string_keys, $this->hs_robots_keys ) as $hs_key ) {
 			$value = get_post_meta( get_the_ID(), $hs_key, true );
 
 			if ( ! empty( $value ) ) {
 				$hs_data[ $hs_key ] = $value;
+			}
+		}
+
+		// Keys that can exist multiple times per post
+		foreach ( $this->hs_array_keys as $hs_key ) {
+			$values = get_post_meta( get_the_ID(), $hs_key, false );
+
+			if ( ! empty( $values ) ) {
+				$hs_data[ $hs_key ] = $values;
 			}
 		}
 
@@ -98,11 +156,25 @@ class ETH_Escape_HeadSpace2 {
 		echo "\n<!-- Escape HeadSpace2 by Erick Hitter; ethitter.com -->\n";
 
 		// Handle basic, string-containing keys
+		$output = array();
+
 		foreach ( $hs_data as $hs_key => $hs_value ) {
 			switch( $hs_key ) {
 				case '_headspace_description' :
 				case '_headspace_metakey' :
-					echo '<meta name="' . esc_attr( $this->hs_keys_to_meta_names[ $hs_key ] ) . '" content="' . esc_attr( $hs_value ) . '" />' . "\n";
+					$output[] = '<meta name="' . esc_attr( $this->hs_keys_to_meta_names[ $hs_key ] ) . '" content="' . esc_attr( $hs_value ) . '" />';
+					break;
+
+				case '_headspace_scripts' :
+					foreach ( $hs_value as $_source ) {
+						$output[] = '<script type="text/javascript" src="' . esc_url( $_source ) . '"></script>';
+					}
+					break;
+
+				case '_headspace_stylesheets' :
+					foreach ( $hs_value as $_source ) {
+						$output[] = '<link rel="stylesheet" href="' . esc_url( $_source ) . '" type="text/css" />';
+					}
 					break;
 
 				default :
@@ -127,11 +199,32 @@ class ETH_Escape_HeadSpace2 {
 
 			$robots = implode( ',', $robots );
 
-			echo '<meta name="robots" content="' . esc_attr( $robots ) . '" />' . "\n";
+			$output[] = '<meta name="robots" content="' . esc_attr( $robots ) . '" />' . "\n";
+		}
+
+		// Raw output should follow all other output
+		if ( isset( $hs_data[ '_headspace_raw' ] ) && ! empty( $hs_data[ '_headspace_raw' ] ) ) {
+			$output[] = $hs_data[ '_headspace_raw' ];
+		}
+
+		// Output whatever we've built
+		if ( ! empty( $output ) ) {
+			echo implode( "\n", $output );
 		}
 
 		// Mark end of output
-		echo "<!-- Escape HeadSpace2 -->\n";
+		echo "\n<!-- Escape HeadSpace2 -->\n";
+	}
+
+	/**
+	 * Add custom footer content
+	 */
+	public function action_wp_footer() {
+		$output = get_post_meta( get_the_ID(), '_headspace_raw_footer', true );
+
+		if ( ! empty( $output ) ) {
+			echo $output . "\n";
+		}
 	}
 }
 
