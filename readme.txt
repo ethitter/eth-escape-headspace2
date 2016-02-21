@@ -1,6 +1,6 @@
 === ETH Escape HeadSpace2 ===
 Contributors: ethitter
-Donate link: https://ethitter.com/
+Donate link: https://ethitter.com/donate/
 Tags: seo, meta tags
 Requires at least: 4.4
 Tested up to: 4.4
