@@ -4,7 +4,7 @@ Donate link: https://ethitter.com/donate/
 Tags: seo, meta tags
 Requires at least: 4.4
 Tested up to: 5.2
-Stable tag: 0.2
+Stable tag: 0.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,8 +49,17 @@ Mostly, I either didn't have time or didn't have a good example of how a particu
 
 == Changelog ==
 
+= 0.2.1 =
+* PHP 7.3 compatibility.
+
 = 0.2 =
 * Add support for page titles, scripts, stylesheets, and raw header/footer content.
 
 = 0.1 =
 * Initial release
+
+
+== Upgrade Notice ==
+
+= 0.2.1 =
+Resolved warning arising in PHP 7.3.
