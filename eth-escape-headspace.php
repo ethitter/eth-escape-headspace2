@@ -66,7 +66,7 @@ class ETH_Escape_HeadSpace2 {
 	);
 
 	/**
-	 * robots.txt keys.
+	 * Headspace's robots.txt keys.
 	 *
 	 * @var array
 	 */
@@ -197,25 +197,25 @@ class ETH_Escape_HeadSpace2 {
 		$output = array();
 
 		foreach ( $hs_data as $hs_key => $hs_value ) {
-			switch( $hs_key ) {
-				case '_headspace_description' :
-				case '_headspace_metakey' :
+			switch ( $hs_key ) {
+				case '_headspace_description':
+				case '_headspace_metakey':
 					$output[] = '<meta name="' . esc_attr( $this->hs_keys_to_meta_names[ $hs_key ] ) . '" content="' . esc_attr( $hs_value ) . '" />';
 					break;
 
-				case '_headspace_scripts' :
+				case '_headspace_scripts':
 					foreach ( $hs_value as $_source ) {
 						$output[] = '<script type="text/javascript" src="' . esc_url( $_source ) . '"></script>';
 					}
 					break;
 
-				case '_headspace_stylesheets' :
+				case '_headspace_stylesheets':
 					foreach ( $hs_value as $_source ) {
 						$output[] = '<link rel="stylesheet" href="' . esc_url( $_source ) . '" type="text/css" />';
 					}
 					break;
 
-				default :
+				default:
 					continue 2;
 					break;
 			}
@@ -225,7 +225,7 @@ class ETH_Escape_HeadSpace2 {
 		$robots = array();
 
 		foreach ( $this->hs_robots_keys as $hs_robot_key ) {
-			if ( isset( $hs_data[ $hs_robot_key] ) ) {
+			if ( isset( $hs_data[ $hs_robot_key ] ) ) {
 				$robots[] = str_replace( '_headspace_', '', $hs_robot_key );
 			}
 		}
@@ -241,12 +241,13 @@ class ETH_Escape_HeadSpace2 {
 		}
 
 		// Raw output should follow all other output.
-		if ( ! empty( $hs_data[ '_headspace_raw' ] ) ) {
-			$output[] = $hs_data[ '_headspace_raw' ];
+		if ( ! empty( $hs_data['_headspace_raw'] ) ) {
+			$output[] = $hs_data['_headspace_raw'];
 		}
 
-		// Output whatever we've built
+		// Output whatever we've built.
 		if ( ! empty( $output ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo "\n<!-- Escape HeadSpace2 by Erick Hitter; https://ethitter.com/plugins/ -->\n" . implode( "\n", $output ) . "\n<!-- Escape HeadSpace2 -->\n";
 		}
 	}
@@ -258,6 +259,7 @@ class ETH_Escape_HeadSpace2 {
 		$output = get_post_meta( get_the_ID(), '_headspace_raw_footer', true );
 
 		if ( ! empty( $output ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $output . "\n";
 		}
 	}
