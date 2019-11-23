@@ -1,30 +1,35 @@
-<?php
-/*
-Plugin Name: ETH Escape HeadSpace2
-Plugin URI: https://ethitter.com/plugins/
-Description: Output existing HeadSpace2 data without the original plugin. Allows HeadSpace2 (no longer maintained) to be deactivated without impactacting legacy content.
-Author: Erick Hitter
-Version: 0.2.1
-Author URI: https://ethitter.com/
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
+/**
+  Plugin Name: ETH Escape HeadSpace2
+  Plugin URI: https://ethitter.com/plugins/
+  Description: Output existing HeadSpace2 data without the original plugin. Allows HeadSpace2 (no longer maintained) to be deactivated without impactacting legacy content.
+  Author: Erick Hitter
+  Version: 0.2.1
+  Author URI: https://ethitter.com/
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
+/**
+ * Class ETH_Escape_HeadSpace2.
+ */
 class ETH_Escape_HeadSpace2 {
 	/**
 	 * Singleton
+	 *
+	 * @var self
 	 */
 	private static $instance = null;
 
@@ -33,14 +38,16 @@ class ETH_Escape_HeadSpace2 {
 	 */
 	public static function get_instance() {
 		if ( ! is_a( self::$instance, __CLASS__ ) ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 
 		return self::$instance;
 	}
 
 	/**
-	 * Class properties
+	 * Headspace's string keys.
+	 *
+	 * @var array
 	 */
 	private $hs_string_keys = array(
 		'_headspace_description',
@@ -48,11 +55,21 @@ class ETH_Escape_HeadSpace2 {
 		'_headspace_raw',
 	);
 
+	/**
+	 * Headspace's array keys.
+	 *
+	 * @var array
+	 */
 	private $hs_array_keys = array(
 		'_headspace_scripts',
 		'_headspace_stylesheets',
 	);
 
+	/**
+	 * robots.txt keys.
+	 *
+	 * @var array
+	 */
 	private $hs_robots_keys = array(
 		'_headspace_noindex',
 		'_headspace_nofollow',
@@ -61,6 +78,11 @@ class ETH_Escape_HeadSpace2 {
 		'_headspace_noydir',
 	);
 
+	/**
+	 * Map Headspace keys.
+	 *
+	 * @var array
+	 */
 	private $hs_keys_to_meta_names = array(
 		'_headspace_description' => 'description',
 		'_headspace_metakey'     => 'keywords',
@@ -80,7 +102,7 @@ class ETH_Escape_HeadSpace2 {
 	 * Conditionally register plugin's hooks
 	 */
 	public function maybe_add_hooks() {
-		// Defer to HeadSpace2 when active
+		// Defer to HeadSpace2 when active.
 		if ( class_exists( 'HeadSpace_Plugin' ) ) {
 			return;
 		}
@@ -93,8 +115,10 @@ class ETH_Escape_HeadSpace2 {
 	}
 
 	/**
-	 * Filter page titles in WP 4.1+ themes
-	 * add_theme_support( 'title-tag' )
+	 * Filter page titles in WP 4.1+ themes add_theme_support( 'title-tag' ).
+	 *
+	 * @param string $title Page title.
+	 * @return string
 	 */
 	public function filter_pre_get_document_title( $title ) {
 		$_title = get_post_meta( get_the_ID(), '_headspace_page_title', true );
@@ -109,8 +133,12 @@ class ETH_Escape_HeadSpace2 {
 	}
 
 	/**
-	 * Filter page titles in themes designed for < WP 4.1
-	 * wp_title()
+	 * Filter page titles in themes designed for < WP 4.1 wp_title().
+	 *
+	 * @param string $title Object title.
+	 * @param string $sep   Title separator.
+	 * @param string $loc   Separator location.
+	 * @return string
 	 */
 	public function filter_wp_title( $title, $sep, $loc ) {
 		$_title = get_post_meta( get_the_ID(), '_headspace_page_title', true );
@@ -118,7 +146,7 @@ class ETH_Escape_HeadSpace2 {
 		if ( ! empty( $_title ) ) {
 			$_title = esc_html( $_title );
 
-			if ( 'right' == $loc ) {
+			if ( 'right' === $loc ) {
 				$title = $_title . ' ' . $sep . ' ';
 			} else {
 				$title = ' ' . $sep . ' ' . $_title;
@@ -134,15 +162,15 @@ class ETH_Escape_HeadSpace2 {
 	 * Add <head> meta tags
 	 */
 	public function action_wp_head() {
-		// Applies only to individual post objects
+		// Applies only to individual post objects.
 		if ( ! is_singular() ) {
 			return;
 		}
 
-		// Check for HS data
+		// Check for HS data.
 		$hs_data = array();
 
-		// Keys that only exist once per post
+		// Keys that only exist once per post.
 		foreach ( array_merge( $this->hs_string_keys, $this->hs_robots_keys ) as $hs_key ) {
 			$value = get_post_meta( get_the_ID(), $hs_key, true );
 
@@ -151,7 +179,7 @@ class ETH_Escape_HeadSpace2 {
 			}
 		}
 
-		// Keys that can exist multiple times per post
+		// Keys that can exist multiple times per post.
 		foreach ( $this->hs_array_keys as $hs_key ) {
 			$values = get_post_meta( get_the_ID(), $hs_key, false );
 
@@ -160,12 +188,12 @@ class ETH_Escape_HeadSpace2 {
 			}
 		}
 
-		// Bail if no HS data exists for this post
+		// Bail if no HS data exists for this post.
 		if ( empty( $hs_data ) ) {
 			return;
 		}
 
-		// Handle basic, string-containing keys
+		// Handle basic, string-containing keys.
 		$output = array();
 
 		foreach ( $hs_data as $hs_key => $hs_value ) {
@@ -193,7 +221,7 @@ class ETH_Escape_HeadSpace2 {
 			}
 		}
 
-		// Handle robots key, which is build from several meta keys
+		// Handle robots key, which is build from several meta keys.
 		$robots = array();
 
 		foreach ( $this->hs_robots_keys as $hs_robot_key ) {
@@ -212,8 +240,8 @@ class ETH_Escape_HeadSpace2 {
 			$output[] = '<meta name="robots" content="' . esc_attr( $robots ) . '" />' . "\n";
 		}
 
-		// Raw output should follow all other output
-		if ( isset( $hs_data[ '_headspace_raw' ] ) && ! empty( $hs_data[ '_headspace_raw' ] ) ) {
+		// Raw output should follow all other output.
+		if ( ! empty( $hs_data[ '_headspace_raw' ] ) ) {
 			$output[] = $hs_data[ '_headspace_raw' ];
 		}
 
