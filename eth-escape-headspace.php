@@ -91,8 +91,6 @@ class ETH_Escape_HeadSpace2 {
 	/**
 	 * Defer plugin hook additions until all plugins are loaded
 	 * Allows plugin to defer to HeadSpace2 when active
-	 *
-	 * @return null
 	 */
 	private function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'maybe_add_hooks' ) );
