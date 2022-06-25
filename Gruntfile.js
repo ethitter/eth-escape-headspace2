@@ -9,7 +9,7 @@ module.exports = function( grunt ) {
 
 		addtextdomain: {
 			options: {
-				textdomain: 'eth_escape_headspace2',
+				textdomain: 'eth-escape-headspace2',
 			},
 			update_all_domains: {
 				options: {

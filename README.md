@@ -4,7 +4,7 @@
 **Tags:** seo, meta tags  
 **Requires at least:** 4.4  
 **Tested up to:** 6.0  
-**Stable tag:** 0.2.1  
+**Stable tag:** 0.2.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -49,6 +49,9 @@ Mostly, I either didn't have time or didn't have a good example of how a particu
 
 ## Changelog ##
 
+### 0.2.2 ###
+* Fix translation support.
+
 ### 0.2.1 ###
 * PHP 7.3 compatibility.
 
@@ -61,5 +64,8 @@ Mostly, I either didn't have time or didn't have a good example of how a particu
 
 ## Upgrade Notice ##
 
+### 0.2.2 ###
+Fixes translation support.
+
 ### 0.2.1 ###
-Resolved warning arising in PHP 7.3.
+Resolves warning arising in PHP 7.3.
