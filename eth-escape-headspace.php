@@ -4,7 +4,7 @@
  * Plugin URI: https://ethitter.com/plugins/
  * Description: Output existing HeadSpace2 data without the original plugin. Allows HeadSpace2 (no longer maintained) to be deactivated without impactacting legacy content.
  * Author: Erick Hitter
- * Version: 0.2.1
+ * Version: 0.2.2
  * Author URI: https://ethitter.com/
  * Text Domain: eth-escape-headspace2
  * Domain Path: /languages/
