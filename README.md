@@ -3,7 +3,7 @@
 **Donate link:** https://ethitter.com/donate/  
 **Tags:** seo, meta tags  
 **Requires at least:** 4.4  
-**Tested up to:** 6.8  
+**Tested up to:** 6.9  
 **Stable tag:** 0.2.2  
 **Requires PHP:** 7.2  
 **License:** GPLv2 or later  
